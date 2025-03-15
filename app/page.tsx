@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      <HomeButton></HomeButton>
+      <HomeButton />
     </>
   )
 }
