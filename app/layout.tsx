@@ -12,11 +12,7 @@ export const metadata: Metadata = {
   description: "An anonymous chatroom you can create, share, and delete anytime.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
   return (
     <html lang="en">
       <head>
