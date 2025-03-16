@@ -3,20 +3,52 @@
 import { useRouter } from "next/navigation"
 import { useState } from "react";
 import styled, { keyframes } from "styled-components";
+import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { db } from "@/config/firebase";
 
 export default function HomeButton() {
 
     const router = useRouter();
     const [openOption, setOpenOption] = useState<boolean>(false);
     const [time, setTime] = useState<string>("30");
+    const [chatPassword, setChatPassword] = useState<string>("")
 
     function randomCode(): string {
         return Math.random().toString(36).substring(2, 7)
     }
 
     async function createRoom() {
+        try {
+            const nowMillis = Timestamp.now().toMillis()
+            let expMillis;
+            const plus30Minutes = nowMillis + 30 * 60 * 1000;
+            const plus5Hours = nowMillis + 5 * 60 * 60 * 1000;
+            const plus24Hours = nowMillis + 24 * 60 * 60 * 1000;
 
-        router.push(`/${randomCode()}`);
+            if (time === "30") {
+                expMillis = plus30Minutes
+            } else if (time === "5") {
+                expMillis = plus5Hours
+            } else {
+                expMillis = plus24Hours
+            }
+
+            const data = {
+                chatCode: randomCode(),
+                exp: Timestamp.fromMillis(expMillis).toMillis(),
+                createdAt: Timestamp.fromMillis(nowMillis).toMillis(),
+                usePassword: chatPassword ? true : false,
+                password: chatPassword
+            }
+
+            await addDoc(collection(db, "chats"), data)
+
+            router.push(`/${data.chatCode}`);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                console.log(error.message)
+            }
+        }
     }
 
 
@@ -32,7 +64,7 @@ export default function HomeButton() {
                         <div onClick={() => setTime("24")} className={`${time === "24" ? "shadow shadow-white" : ""} w-15 h-15 cursor-pointer text-center`}>24 Hours</div>
                     </div>
                     <p className="mt-5">Password: </p>
-                    <input type="text" placeholder="Empty = no password" className="border rounded-md border-white outline-none px-4 py-2 w-full mt-1" />
+                    <input type="text" value={chatPassword} onChange={(e) => setChatPassword(e.target.value)} placeholder="Empty = no password" className="border rounded-md border-white outline-none px-4 py-2 w-full mt-1" />
                     <button onClick={createRoom} className="mt-3 cursor-pointer px-2 py-1 shadow hover:shadow-white">Create</button>
                 </Option>
             </>)}
