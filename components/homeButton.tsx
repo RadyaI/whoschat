@@ -9,6 +9,7 @@ import { db } from "@/config/firebase";
 export default function HomeButton() {
 
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [openOption, setOpenOption] = useState<boolean>(false);
     const [time, setTime] = useState<string>("30");
     const [chatPassword, setChatPassword] = useState<string>("")
@@ -19,6 +20,7 @@ export default function HomeButton() {
 
     async function createRoom() {
         try {
+            setIsLoading(true)
             const nowMillis = Timestamp.now().toMillis()
             let expMillis;
             const plus30Minutes = nowMillis + 30 * 60 * 1000;
@@ -34,16 +36,17 @@ export default function HomeButton() {
             }
 
             const data = {
-                chatCode: randomCode(),
+                roomCode: randomCode(),
                 exp: Timestamp.fromMillis(expMillis).toMillis(),
                 createdAt: Timestamp.fromMillis(nowMillis).toMillis(),
                 usePassword: chatPassword ? true : false,
                 password: chatPassword
             }
 
-            await addDoc(collection(db, "chats"), data)
+            await addDoc(collection(db, "rooms"), data)
+            setIsLoading(false)
 
-            router.push(`/${data.chatCode}`);
+            router.push(`/${data.roomCode}`);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 console.log(error.message)
@@ -65,7 +68,7 @@ export default function HomeButton() {
                     </div>
                     <p className="mt-5">Password: </p>
                     <input type="text" value={chatPassword} onChange={(e) => setChatPassword(e.target.value)} placeholder="Empty = no password" className="border rounded-md border-white outline-none px-4 py-2 w-full mt-1" />
-                    <button onClick={createRoom} className="mt-3 cursor-pointer px-2 py-1 shadow hover:shadow-white">Create</button>
+                    <button onClick={createRoom} className="mt-3 cursor-pointer px-2 py-1 shadow hover:shadow-white">{isLoading ? "Loading..." : "Create"}</button>
                 </Option>
             </>)}
 

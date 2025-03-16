@@ -1,3 +1,4 @@
+import Chat from "@/components/chat";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,7 +12,7 @@ export default async function ChatPage({ params }: { params: Promise<{ chat: str
 
     return (
         <>
-            {chatId}
+            <Chat roomId={chatId} />
         </>
     )
 }
