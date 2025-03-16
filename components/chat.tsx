@@ -48,7 +48,7 @@ export default function Chat({ roomId }: { roomId: string }) {
             if (Timestamp.now().toMillis() > exp) {
                 setStatus("notfound");
             }
-        }, 1000);
+        }, 500);
 
         return () => clearInterval(interval);
     }, [exp])
