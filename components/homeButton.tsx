@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { db } from "@/config/firebase";
@@ -54,7 +54,9 @@ export default function HomeButton() {
         }
     }
 
-
+    useEffect(() => {
+        sessionStorage.clear()
+    }, [])
 
     return (
         <>
