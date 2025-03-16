@@ -11,6 +11,8 @@ export default function Chat({ roomId }: { roomId: string }) {
     const [status, setStatus] = useState<string>("loading");
     const [password, setPassword] = useState<string>("");
     const [inputPassword, setInputPassword] = useState<string>("");
+    const [exp, setExp] = useState<number>(0);
+    const [createdAt, setCreatedAt] = useState<number>(0);
 
     useEffect(() => {
         async function checkRoom() {
@@ -20,9 +22,11 @@ export default function Chat({ roomId }: { roomId: string }) {
                     setStatus("notfound")
                 } else {
                     data.forEach((data) => {
+                        setPassword(data.data().password)
+                        setExp(data.data().exp)
+                        setCreatedAt(data.data().createdAt)
                         if (data.data().usePassword && !sessionStorage.getItem("pass")) {
                             setStatus("needpassword")
-                            setPassword(data.data().password)
                         } else {
                             setStatus("true")
                         }
@@ -86,7 +90,70 @@ export default function Chat({ roomId }: { roomId: string }) {
 
     return (
         <>
-            <div className="w-[80%] sm:w-1/2 mx-auto border mt-4"></div>
+            <div className="w-[90%]  sm:w-1/2 h-[95dvh] mx-auto mt-4">
+                <div className="w-fit">Created at: {new Date(createdAt).toLocaleString("id-ID", {
+                    hour12: false,
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: '2-digit'
+                })}</div>
+
+                <div className="w-fit">Exp at: {new Date(exp).toLocaleString("id-ID", {
+                    hour12: false,
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: '2-digit'
+                })}</div>
+
+                <ChatWrapper className="w-[90%] px-4 mx-auto flex flex-col items-end h-[85%] mt-6">
+                    
+                    <div className="text-right gap-2 w-full mt-6">
+                        <p>Hellowwww</p>
+                        <p className="text-[10px]">20:01</p>
+                    </div>
+                    <div className="text-right gap-2 w-full mt-6">
+                        <p>Hellowwww</p>
+                        <p className="text-[10px]">20:01</p>
+                    </div>
+                    <div className="text-right gap-2 w-full mt-6">
+                        <p>Hellowwww</p>
+                        <p className="text-[10px]">20:01</p>
+                    </div>
+                    <div className="text-right gap-2 w-full mt-6">
+                        <p>Hellowwww</p>
+                        <p className="text-[10px]">20:01</p>
+                    </div>
+                    <div className="text-right gap-2 w-full mt-6">
+                        <p>Hellowwww</p>
+                        <p className="text-[10px]">20:01</p>
+                    </div>
+                    <div className="text-right gap-2 w-full mt-6">
+                        <p>Hellowwww</p>
+                        <p className="text-[10px]">20:01</p>
+                    </div>
+                    <div className="text-right gap-2 w-full mt-6">
+                        <p>Hellowwww</p>
+                        <p className="text-[10px]">20:01</p>
+                    </div>
+                    <div className="text-right gap-2 w-full mt-6">
+                        <p>Hellowwww</p>
+                        <p className="text-[10px]">20:01</p>
+                    </div>
+                    <div className="text-right gap-2 w-full mt-6">
+                        <p>Hellowwww</p>
+                        <p className="text-[10px]">20:01</p>
+                    </div>
+                    <div className="text-right gap-2 w-full mt-6">
+                        <p>Lorem</p>
+                        <p className="text-[10px]">20:01</p>
+                    </div>
+                    
+                </ChatWrapper>
+            </div>
         </>
     )
 }
@@ -109,4 +176,22 @@ const Loading = styled.div`
     border-right: 4px solid #0a0a0a;
     border-bottom: 4px solid #0a0a0a;
     animation: ${loadingAnimation} 500ms linear infinite;
+`
+
+const ChatWrapper = styled.div`
+    overflow: auto;
+
+    &::-webkit-scrollbar{
+        width: 5px;
+    }
+
+    &::-webkit-scrollbar-track{
+        display: none;
+    }
+
+    &::-webkit-scrollbar-thumb{
+        width: 5px;
+        background-color: #efefef;
+        border-radius: 50px;
+    }
 `
