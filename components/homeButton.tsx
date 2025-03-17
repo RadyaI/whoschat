@@ -76,7 +76,6 @@ export default function HomeButton() {
 
             <div className="fixed z-10 flex flex-col text-2xl sm:text-xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
                 <button onClick={() => setOpenOption(!openOption)} className="cursor-pointer hover:text-green-400">Create</button>
-                <button>or <span className="cursor-pointer hover:text-green-400">Join</span></button>
             </div>
         </>
     )
